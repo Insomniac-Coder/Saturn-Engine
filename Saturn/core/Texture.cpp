@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-Texture::Texture(std::string filePath) : textureId(0), localBuffer(nullptr), width(0), height(0), bpp(0), file(filePath)
+Texture::Texture(std::string filePath, std::string textureType) : textureId(0), localBuffer(nullptr), width(0), height(0), bpp(0), file(filePath), type(textureType)
 {
 	stbi_set_flip_vertically_on_load(1);
 

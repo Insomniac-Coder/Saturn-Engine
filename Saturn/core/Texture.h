@@ -13,14 +13,16 @@ private:
 	int bpp;
 	unsigned char* localBuffer;
 	std::string file;
+	std::string type;
 
 public:
-	Texture(std::string filePath);
+	Texture(std::string filePath, std::string textureType);
 	~Texture();
 	void Bind(unsigned int slot = 0);
 	void UnBind();
 	inline unsigned int GetWidth() { return width; }
 	inline unsigned int GetHeight() { return height; }
+	inline std::string GetType() { return type; }
 };
 
 #endif TEXTURE_H

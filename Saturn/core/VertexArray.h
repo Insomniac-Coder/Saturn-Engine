@@ -9,7 +9,6 @@ private:
 	VertexBuffer* vb;
 	int pos = 0;
 	int offsetSizeVal = 0;
-	std::string suppliedType;
 
 public:
 	VertexArray(VertexBuffer* vbRef);

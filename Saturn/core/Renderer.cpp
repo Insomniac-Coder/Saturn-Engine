@@ -1,10 +1,6 @@
 #include "Renderer.h"
 #include "FileIO.h"
-#include "Shader.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "Texture.h"
+#include "Object3D.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -32,7 +28,8 @@ Saturn::Renderer::~Renderer()
 
 void Saturn::Renderer::Run()
 {
-
+	glEnable(GL_DEPTH_TEST);
+	/*
 	float vertices[] = {
 		-0.5f, -0.5f, 0.0f, 0.0f,	//0
 		 0.5f, -0.5f, 1.0f, 0.0f,	//1
@@ -45,10 +42,6 @@ void Saturn::Renderer::Run()
 		2, 3, 0
 	};
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
-
-	glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -4.5f, 4.5f);
 
 	VertexBuffer vb(vertices, 16);
 
@@ -73,16 +66,39 @@ void Saturn::Renderer::Run()
 	texture.Bind();
 	shader.SetUniform("textureIn", 0);
 	shader.SetUniform("projection", projection);
+	*/
+
+	std::string filepath = "./3DShader.shader";
+
+	Shader shader(filepath);
+
+	Object3D obj("./resources/Survival_BackPack_2.fbx", "./resources/1001_albedo.jpg", "./resources/1001_metallic.jpg", "./resources/1001_normal.jpg", "./resources/1001_roughness.jpg", false);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+
+	//glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -4.5f, 4.5f);
+
+	glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)r_Width / (float)r_Height, 0.1f, 100.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+	shader.SetUniform("projection", projection);
+	shader.SetUniform("view", view);
+
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+	shader.SetUniform("model", model);
 
 	while (!glfwWindowShouldClose(r_Window)) {
 		glfwPollEvents();
 		glClearColor(r_ClearColor.r, r_ClearColor.g, r_ClearColor.b, r_ClearColor.a);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		shader.Bind();
-		va.Bind();
-		ib.Bind();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		//shader.Bind();
+		//va.Bind();
+		//ib.Bind();
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		obj.Draw(shader);
 
 		glfwSwapBuffers(r_Window);
 		glfwGetWindowSize(r_Window, &r_Width, &r_Height);

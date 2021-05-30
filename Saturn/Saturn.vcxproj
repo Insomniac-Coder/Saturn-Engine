@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc142-mtd.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)thirdparty\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -96,6 +96,10 @@
     <ClCompile Include="core\Texture.cpp" />
     <ClCompile Include="core\stbi_image.cpp" />
     <ClCompile Include="core\Window.cpp" />
+    <ClCompile Include="core\GameObject.cpp" />
+    <ClCompile Include="core\Scene.cpp" />
+    <ClCompile Include="core\Object3D.cpp" />
+    <ClCompile Include="core\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\EntryPoint.h" />
@@ -113,9 +117,14 @@
     <ClInclude Include="core\Texture.h" />
     <ClInclude Include="core\stb_image.h" />
     <ClInclude Include="core\Window.h" />
+    <ClInclude Include="core\GameObject.h" />
+    <ClInclude Include="core\Scene.h" />
+    <ClInclude Include="core\Object3D.h" />
+    <ClInclude Include="core\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.shader" />
+    <None Include="3DShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
