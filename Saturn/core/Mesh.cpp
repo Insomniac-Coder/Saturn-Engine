@@ -1,14 +1,14 @@
 #include "Mesh.h"
+#include "logging/Log.h"
 
 Saturn::Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures) : m_Textures(textures){
 	m_Vbo = new VertexBuffer(&vertices[0], vertices.size());
 	m_Vao = new VertexArray(m_Vbo);
     m_Vbo->Bind();
-
+    m_Ibo = new IndexBuffer(&indices[0], indices.size());
 	SetupMesh();
-
-	m_Ibo = new IndexBuffer(&indices[0], indices.size());
-
+    LOG_INFO("Vertices Count" + std::to_string(vertices.size()));
+    LOG_INFO("Indices Count" + std::to_string(indices.size()));
 	m_Vao->UnBind();
 	m_Vbo->UnBind();
 	m_Ibo->UnBind();
@@ -21,7 +21,7 @@ void Saturn::Mesh::Draw(Shader& shader) {
 	unsigned int normalNr = 1;
 	unsigned int heightNr = 1;
 
-   
+    //LOG_INFO(std::to_string(m_Textures.size()));
 
     for (int i = 0; i < m_Textures.size(); i++)
     {
@@ -40,13 +40,15 @@ void Saturn::Mesh::Draw(Shader& shader) {
 
         // now set the sampler to the correct texture unit
         shader.SetUniform((name + number).c_str(), i);
-        m_Textures[i].Bind();
+        //LOG_INFO((name + number).c_str());
+        m_Textures[i].Bind(i);
     }
 
     shader.Bind();
     m_Vao->Bind();
     m_Ibo->Bind();
     glDrawElements(GL_TRIANGLES, m_Ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
+    //LOG_INFO(std::to_string(m_Ibo->GetCount()));
     
     shader.UnBind();
     m_Vao->UnBind();
@@ -57,9 +59,18 @@ void Saturn::Mesh::Draw(Shader& shader) {
 }
 
 void Saturn::Mesh::SetupMesh() {
-	m_Vao->AddAttribute(sizeof(((Vertex*)0)->Position), sizeof(Vertex));
-	m_Vao->AddAttribute(sizeof(((Vertex*)0)->Normal), sizeof(Vertex));
-	m_Vao->AddAttribute(sizeof(((Vertex*)0)->TexCoords), sizeof(Vertex));
-	m_Vao->AddAttribute(sizeof(((Vertex*)0)->Tangent), sizeof(Vertex));
-	m_Vao->AddAttribute(sizeof(((Vertex*)0)->BiTangent), sizeof(Vertex));
+	m_Vao->AddAttribute(sizeof(((Vertex*)0)->Position) / sizeof(float));
+    //LOG_INFO(std::to_string(sizeof(((Vertex*)0)->Position) / sizeof(float)));
+
+	m_Vao->AddAttribute(sizeof(((Vertex*)0)->Normal) / sizeof(float));
+    //LOG_INFO(std::to_string(sizeof(((Vertex*)0)->Normal) / sizeof(float)));
+
+	m_Vao->AddAttribute(sizeof(((Vertex*)0)->TexCoords) / sizeof(float));
+    //LOG_INFO(std::to_string(sizeof(((Vertex*)0)->TexCoords) / sizeof(float)));
+
+	m_Vao->AddAttribute(sizeof(((Vertex*)0)->Tangent) / sizeof(float));
+    //LOG_INFO(std::to_string(sizeof(((Vertex*)0)->Tangent) / sizeof(float)));
+
+	m_Vao->AddAttribute(sizeof(((Vertex*)0)->BiTangent) / sizeof(float));
+    //LOG_INFO(std::to_string(sizeof(((Vertex*)0)->BiTangent) / sizeof(float)));
 }

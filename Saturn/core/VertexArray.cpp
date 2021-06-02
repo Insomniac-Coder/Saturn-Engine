@@ -1,4 +1,5 @@
 #include "VertexArray.h"
+#include "logging/Log.h"
 
 VertexArray::VertexArray(VertexBuffer* vbRef) : vb(vbRef)
 {
@@ -22,12 +23,11 @@ void VertexArray::UnBind()
 	glBindVertexArray(0);
 }
 
-void VertexArray::AddAttribute(int size, int stride) {
-	GLenum dataType = GL_FLOAT;
+void VertexArray::AddAttribute(int size) {
 	size_t sizeOfType = sizeof(Vertex);
-
-	glVertexAttribPointer(pos, size, dataType, false, stride * sizeOfType, (void*)(offsetSizeVal * sizeOfType)); //telling opengl about various attributes in a vertex
 	glEnableVertexAttribArray(pos); // enabling a particular vertex attribute
+	glVertexAttribPointer(pos, size, GL_FLOAT, false, sizeOfType, (void*)(offsetSizeVal * sizeof(float))); //telling opengl about various attributes in a vertex
+	//LOG_INFO("glEnableVertexAttribArray(" + std::to_string(pos) + ")" + "\nglVertexAttribPointer(" + std::to_string(pos) + ", " + std::to_string(size) + ", GL_FLOAT, false, " + std::to_string(sizeOfType) + ", " + std::to_string(offsetSizeVal * sizeof(float)) + ")");
 	pos++;
 	offsetSizeVal += size;
 }

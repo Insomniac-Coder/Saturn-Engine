@@ -15,7 +15,7 @@ public:
 	~VertexArray();
 	void Bind();
 	void UnBind();
-	void AddAttribute(int size, int stride);
+	void AddAttribute(int size);
 };
 
 #endif VERTEXARRAY_H
