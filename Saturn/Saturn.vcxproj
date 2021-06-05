@@ -84,7 +84,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\core\Application.h" />
     <ClInclude Include="Engine\core\Log\Log.h" />
-    <ClInclude Include="Engine\core\Mesh.h" />
+    <ClInclude Include="Engine\core\RenderDataLoader.h" />
     <ClInclude Include="Engine\Saturn.h" />
     <ClInclude Include="Engine\core\Entrypoint.h" />
     <ClInclude Include="Engine\core\FileIO.h" />
@@ -105,7 +105,7 @@
     <ClCompile Include="Engine\core\FileIO.cpp" />
     <ClCompile Include="Engine\core\glad.c" />
     <ClCompile Include="Engine\core\Log\Log.cpp" />
-    <ClCompile Include="Engine\core\Mesh.cpp" />
+    <ClCompile Include="Engine\core\RenderDataLoader.cpp" />
     <ClCompile Include="Engine\core\Window.cpp" />
     <ClCompile Include="Engine\core\Renderer.cpp" />
     <ClCompile Include="Engine\core\VertexBuffer.cpp" />

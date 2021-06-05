@@ -5,7 +5,10 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 #include "Log/Log.h"
-#include "Mesh.h"
+#include <vector>
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include <fstream>
 
 namespace Saturn {
 
@@ -13,11 +16,10 @@ namespace Saturn {
 	{
 	private:
 		std::string path;
-		std::vector<Mesh> m_Mesh;
-		Texture* m_Albedo;
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
 	public:
-		ModelLoader(std::string object3DPath, std::string albedoPath, std::string shaderPath);
-		void Draw();
+		ModelLoader(std::string object3DPath);
 	};
 
 }

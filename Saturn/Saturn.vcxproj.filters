@@ -57,7 +57,7 @@
     <ClInclude Include="Engine\core\ModelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\core\Mesh.h">
+    <ClInclude Include="Engine\core\RenderDataLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="Engine\core\ModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\core\Mesh.cpp">
+    <ClCompile Include="Engine\core\RenderDataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

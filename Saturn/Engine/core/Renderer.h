@@ -8,6 +8,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
+#include "Shader.h"
+#include "Texture.h"
+#include "RenderDataLoader.h"
+#include "ModelLoader.h"
 
 namespace Saturn {
 
@@ -25,6 +29,9 @@ namespace Saturn {
 		int r_VirtualWidth;
 		int r_VirtualHeight;
 		glm::vec4 r_ClearColor = glm::vec4(0.25f, 0.25f, 0.25f, 1.0f);
+		VertexArray* r_Vao;
+		VertexBuffer* r_Vbo;
+		IndexBuffer* r_Ibo;
 	};
 
 }

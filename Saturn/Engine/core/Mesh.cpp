@@ -15,9 +15,17 @@ Saturn::Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indic
 		LOG_INFO("Index: " + std::to_string(indices[i]));
 	}
 
+	LOG_INFO("Number of vertices: " + std::to_string(vertices.size()));
+
 	for (int i = 0; i < vertices.size(); i++) {
 		LOG_INFO("Position: " + std::to_string(vertices[i].Position.x) + ", " + std::to_string(vertices[i].Position.y) + ", " + std::to_string(vertices[i].Position.z));
+	}
+
+	for (int i = 0; i < vertices.size(); i++) {
 		LOG_INFO("Normals: " + std::to_string(vertices[i].Normal.x) + ", " + std::to_string(vertices[i].Normal.y) + ", " + std::to_string(vertices[i].Normal.z));
+	}
+
+	for (int i = 0; i < vertices.size(); i++) {
 		LOG_INFO("TexCoord: " + std::to_string(vertices[i].TexCoords.x) + ", " + std::to_string(vertices[i].TexCoords.y));
 	}
 
@@ -37,7 +45,7 @@ Saturn::Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indic
 	m_Shader.SetUniform("view", view);
 
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, -5.0f)); // translate it down so it's at the center of the scene
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
 	model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));	// it's a bit too big for our scene, so scale it down
 	m_Shader.SetUniform("model", model);
 

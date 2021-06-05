@@ -1,9 +1,9 @@
 #include "ModelLoader.h"
 
-Saturn::ModelLoader::ModelLoader(std::string object3DPath, std::string albedoPath, std::string shaderPath) : path(object3DPath)
+Saturn::ModelLoader::ModelLoader(std::string object3DPath): path(object3DPath)
 {
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcessPreset_TargetRealtime_Quality);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -12,19 +12,16 @@ Saturn::ModelLoader::ModelLoader(std::string object3DPath, std::string albedoPat
 	}
 
 	LOG_INFO("Number of meshes: " + std::to_string(scene->mNumMeshes));
-
-	m_Albedo = new Texture(albedoPath);
 	
 	for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 	{
 
 		glm::vec3 vector;
 		// process each mesh located at the current node
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
 		Vertex vert;
 
 		aiMesh* mesh = scene->mMeshes[i];
+
 		if (mesh->HasPositions()) {
 			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
 				vector.x = mesh->mVertices[j].x;
@@ -51,6 +48,8 @@ Saturn::ModelLoader::ModelLoader(std::string object3DPath, std::string albedoPat
 				//LOG_INFO("\n" + std::to_string(vert.Position.x) + ", " + std::to_string(vert.Position.y) + ", " + std::to_string(vert.Position.z));
 				vertices.push_back(vert);
 			}
+
+			LOG_INFO("Number of vertices: " + std::to_string(mesh->mNumVertices));
 		}
 
 		for (unsigned int j = 0; j < mesh->mNumFaces; j++) {
@@ -59,14 +58,32 @@ Saturn::ModelLoader::ModelLoader(std::string object3DPath, std::string albedoPat
 				indices.push_back(face->mIndices[k]);
 			}
 		}
-
-		m_Mesh.push_back(Mesh(vertices, indices, *m_Albedo, shaderPath));
 	}
+
+	LOG_INFO("Vertices Count: " + std::to_string(vertices.size()));
+	LOG_INFO("Indices Count: " + std::to_string(indices.size()));
+
+	//Create Data file
+	std::string posinfo = "----POSITIONS----\n";
+	std::string norminfo = "----NORMALS----\n";
+	std::string texinfo = "----TEXCOORDS----\n";
+	std::string indinfo = "----INDICES----\n";
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		posinfo += (std::to_string(vertices[i].Position.x) + " " + std::to_string(vertices[i].Position.y) + " " + std::to_string(vertices[i].Position.z) + "\n");
+		norminfo += (std::to_string(vertices[i].Normal.x) + " " + std::to_string(vertices[i].Normal.y) + " " + std::to_string(vertices[i].Normal.z) + "\n");
+		texinfo += (std::to_string(vertices[i].TexCoords.x) + " " + std::to_string(vertices[i].TexCoords.y) + "\n");
+	}
+
+	for (int i = 0; i < indices.size(); i++)
+	{
+		indinfo += (std::to_string(indices[i]) + "\n");
+	}
+
+	std::ofstream oFile("./RenderData/object.data", std::ios::out );
+	posinfo = posinfo + norminfo + texinfo + indinfo;
+	oFile << posinfo;
+	oFile.close();
 }
 
-void Saturn::ModelLoader::Draw()
-{
-	for (int i = 0; i < m_Mesh.size(); i++) {
-		m_Mesh[i].Draw();
-	}
-}

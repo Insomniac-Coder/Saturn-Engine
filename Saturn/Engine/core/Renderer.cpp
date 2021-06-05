@@ -3,7 +3,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
-#include "ModelLoader.h"
 
 static void WindowResize(GLFWwindow* window, int width, int height)
 {
@@ -25,6 +24,9 @@ Saturn::Renderer::Renderer(unsigned int windowWidth, unsigned int windowHeight, 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+
+	r_Vao = new VertexArray();
+	r_Vao->Bind();
 }
 
 Saturn::Renderer::~Renderer()
@@ -34,72 +36,34 @@ Saturn::Renderer::~Renderer()
 void Saturn::Renderer::Run()
 {
 
-	/*
-	std::vector<Vertex> vertices = {
-						{
-							{-0.5f, -0.5f, 0.0f},
-							{0.0f, 0.0f, 0.0f},
-							{0.0f, 0.0f}
-						},
-						{
-							{0.5f, -0.5f, 0.0f},
-							{0.0f, 0.0f, 0.0f},
-							{1.0f, 0.0f}
-						},
-						{
-							{0.5f,  0.5f, 0.0f},
-							{0.0f, 0.0f, 0.0f},
-							{1.0f, 1.0f}
-						},
-						{
-							{-0.5f,  0.5f, 0.0f},
-							{0.0f, 0.0f, 0.0f},
-							{0.0f, 1.0f}
-						}
-	};
+	//ModelLoader myModel("./3DObjects/monkey.fbx");
 
-	std::vector<unsigned int> indices = {	//for index buffer
-		0, 1, 2,
-		2, 3, 0
-	};
+	RenderDataLoader rd("./RenderData/monkey.data");
 
-	VertexArray * va = new VertexArray();
-	va->Bind();
-	VertexBuffer * vb = new VertexBuffer(vertices);
-	IndexBuffer * ib = new IndexBuffer(&indices[0], 6);
+	RenderData* data = rd.GetRenderData();
 
-	va->AddAttribute(sizeof(((Vertex*)0)->Position) / sizeof(float));
-	va->AddAttribute(sizeof(((Vertex*)0)->Normal) / sizeof(float));
-	va->AddAttribute(sizeof(((Vertex*)0)->TexCoords) / sizeof(float));
+	r_Vbo = new VertexBuffer(data->Vertices);
+	r_Ibo = new IndexBuffer(&(data->Indices)[0], data->Indices.size());
 
-	//Unbiding
-	va->UnBind();
-	vb->UnBind();
-	ib->UnBind();
+	r_Vao->AddAttribute(sizeof(((Vertex*)0)->Position) / sizeof(float));
+	r_Vao->AddAttribute(sizeof(((Vertex*)0)->Normal) / sizeof(float));
+	r_Vao->AddAttribute(sizeof(((Vertex*)0)->TexCoords) / sizeof(float));
 
-	std::string filepath = "./Shaders/basic_shader.shader";
-	//glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)r_Width / (float)r_Height, 0.1f, 100.0f);
-	glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -4.5f, 4.5f);
+	r_Vao->UnBind();
+	r_Vbo->UnBind();
+	r_Ibo->UnBind();
 
-	Shader shader(filepath);
-
-	Texture texture("./Textures/sadpepe.png");
-	texture.Bind();
-
-	shader.Bind();
-	shader.SetUniform("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
-	shader.SetUniform("textureIn", 0);
-	shader.SetUniform("projection", projection);
-	*/
-
+	Texture tex("./Textures/rock.jpg");
+	Shader shader("./Shaders/3DShader.shader");
+	//glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)r_Width / (float)r_Height, 0.0f, 100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(60.0f), float(r_Width) / float(r_Height), 0.1f, 100.0f);
+	//glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -4.5f, 4.5f);
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f)); // translate it down so it's at the center of the scene
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
 	
-	Shader shader2();
-
-	
-
-	ModelLoader myObj("./3DObjects/cube.obj", "./Textures/sadpepe.png", "./Shaders/3DShader.shader");
-	
-
 	LOG_INFO(std::to_string(glGetError()));
 
 	while (!glfwWindowShouldClose(r_Window)) {
@@ -107,13 +71,18 @@ void Saturn::Renderer::Run()
 		glClearColor(r_ClearColor.r, r_ClearColor.g, r_ClearColor.b, r_ClearColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//shader.Bind();
-		//va->Bind();
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		//shader.UnBind();
-		//va->UnBind();
-		myObj.Draw();
-
+		tex.Bind();
+		shader.Bind();
+		shader.SetUniform("textureIn", 0);
+		shader.SetUniform("projection", projection);
+		shader.SetUniform("view", view);
+		shader.SetUniform("model", model);
+		r_Vao->Bind();
+		glDrawElements(GL_TRIANGLES, data->Indices.size(), GL_UNSIGNED_INT, nullptr);
+		r_Vao->UnBind();
+		shader.UnBind();
+		tex.UnBind();
+		
 		glfwSwapBuffers(r_Window);
 		glfwGetWindowSize(r_Window, &r_Width, &r_Height);
 	}
