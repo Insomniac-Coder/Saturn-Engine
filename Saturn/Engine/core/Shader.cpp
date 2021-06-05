@@ -129,6 +129,13 @@ void Shader::SetUniform(std::string uniformName, int i1)
 	glUniform1i(loc, i1);
 }
 
+void Shader::SetUniform(std::string uniformName, glm::vec3 v)
+{
+	int loc = FindUniformLocation(uniformName);
+
+	glUniform3f(loc, v.x, v.y, v.z);
+}
+
 void Shader::SetUniform(std::string uniformName, glm::mat4 mat)
 {
 	int loc = FindUniformLocation(uniformName);

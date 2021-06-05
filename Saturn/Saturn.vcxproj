@@ -85,6 +85,14 @@
     <ClInclude Include="Engine\core\Application.h" />
     <ClInclude Include="Engine\core\Log\Log.h" />
     <ClInclude Include="Engine\core\RenderDataLoader.h" />
+    <ClInclude Include="Engine\Editor\imgui\imconfig.h" />
+    <ClInclude Include="Engine\Editor\imgui\imgui.h" />
+    <ClInclude Include="Engine\Editor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Engine\Editor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Engine\Editor\imgui\imgui_internal.h" />
+    <ClInclude Include="Engine\Editor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Engine\Editor\imgui\imstb_textedit.h" />
+    <ClInclude Include="Engine\Editor\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Saturn.h" />
     <ClInclude Include="Engine\core\Entrypoint.h" />
     <ClInclude Include="Engine\core\FileIO.h" />
@@ -97,6 +105,7 @@
     <ClInclude Include="Engine\core\thirdparty\stb_image.h" />
     <ClInclude Include="Engine\core\Texture.h" />
     <ClInclude Include="Engine\core\ModelLoader.h" />
+    <ClInclude Include="Engine\Editor\UIElement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
@@ -115,6 +124,14 @@
     <ClCompile Include="Engine\core\thirdparty\stb_image.cpp" />
     <ClCompile Include="Engine\core\Texture.cpp" />
     <ClCompile Include="Engine\core\ModelLoader.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Engine\Editor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\Editor\UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\3DShader.shader" />

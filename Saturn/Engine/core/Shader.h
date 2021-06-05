@@ -16,6 +16,7 @@ public:
 	void SetUniform(std::string uniformName, float f1);
 	void SetUniform(std::string uniformName, int i1);
 	void SetUniform(std::string uniformName, glm::mat4 mat);
+	void SetUniform(std::string uniformName, glm::vec3 v);
 
 private:
 	struct shaders

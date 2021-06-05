@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
+#include "../Editor/UIElement.h"
 
 static void WindowResize(GLFWwindow* window, int width, int height)
 {
@@ -35,6 +36,7 @@ Saturn::Renderer::~Renderer()
 
 void Saturn::Renderer::Run()
 {
+	Saturn::UI::UIElement ue(r_Window);
 
 	//ModelLoader myModel("./3DObjects/monkey.fbx");
 
@@ -53,27 +55,44 @@ void Saturn::Renderer::Run()
 	r_Vbo->UnBind();
 	r_Ibo->UnBind();
 
-	Texture tex("./Textures/rock.jpg");
+	Texture tex("./Textures/crate.png");
+	Texture tex2(".Textures/crate_specular.png");
 	Shader shader("./Shaders/3DShader.shader");
 	//glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)r_Width / (float)r_Height, 0.0f, 100.0f);
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), float(r_Width) / float(r_Height), 0.1f, 100.0f);
 	//glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -4.5f, 4.5f);
 	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f)); // translate it down so it's at the center of the scene
-	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+
+	glm::vec3 lightPos(1.2f, 1.5f, -4.5f); //light position
 	
 	LOG_INFO(std::to_string(glGetError()));
+	float xRot = 0.0f;
+	float yRot = 0.0f;
+	float zRot = 0.0f;
 
 	while (!glfwWindowShouldClose(r_Window)) {
 		glfwPollEvents();
 		glClearColor(r_ClearColor.r, r_ClearColor.g, r_ClearColor.b, r_ClearColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f)); // translate it down so it's at the center of the scene
+		model = glm::rotate(model, glm::radians(xRot), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(yRot), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(zRot), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+
 		tex.Bind();
+		tex2.Bind(1);
 		shader.Bind();
-		shader.SetUniform("textureIn", 0);
+		shader.SetUniform("material.diffuse", 0);
+		shader.SetUniform("material.specular", 1);
+		shader.SetUniform("light.position", lightPos);
+		shader.SetUniform("viewPos", glm::vec3(0.0f));
+		shader.SetUniform("material.shininess", 64.0f);
+		shader.SetUniform("light.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
+		shader.SetUniform("light.diffuse", glm::vec3(0.7f, 0.7f, 0.7f));
+		shader.SetUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader.SetUniform("projection", projection);
 		shader.SetUniform("view", view);
 		shader.SetUniform("model", model);
@@ -82,6 +101,8 @@ void Saturn::Renderer::Run()
 		r_Vao->UnBind();
 		shader.UnBind();
 		tex.UnBind();
+
+		ue.DrawUI(r_ClearColor, xRot, yRot, zRot);
 		
 		glfwSwapBuffers(r_Window);
 		glfwGetWindowSize(r_Window, &r_Width, &r_Height);
