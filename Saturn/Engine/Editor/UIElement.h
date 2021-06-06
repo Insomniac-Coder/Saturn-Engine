@@ -16,7 +16,7 @@ namespace Saturn {
 		public:
 			UIElement(GLFWwindow* windowRef);
 			~UIElement();
-			void DrawUI(glm::vec4& skyboxColor, float& x, float& y, float& z);
+			void DrawUI(glm::vec4& skyboxColor, float& x, float& y, float& z, glm::vec3& lightColor, float& camXRot, float& camYRot, float& camZRot, float& camXPos, float& camYPos, float& camZPos);
 		};
 	}
 }

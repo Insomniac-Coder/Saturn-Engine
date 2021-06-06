@@ -4,6 +4,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
 #include "../Editor/UIElement.h"
+#include "Camera.h"
 
 static void WindowResize(GLFWwindow* window, int width, int height)
 {
@@ -38,11 +39,23 @@ void Saturn::Renderer::Run()
 {
 	Saturn::UI::UIElement ue(r_Window);
 
-	//ModelLoader myModel("./3DObjects/monkey.fbx");
+	ModelLoader myModel("./3DObjects/crysis.fbx");
 
-	RenderDataLoader rd("./RenderData/monkey.data");
+	RenderDataLoader rd("./RenderData/object.data");
 
 	RenderData* data = rd.GetRenderData();
+
+	Camera cam(Saturn::CameraType::PERSPECTIVE);
+	const float SPEED = 2.5f;
+	const float SENSITIVITY = 0.1f;
+	float x, y, z, a, b, c;
+	a = b = c = 0.0f;
+
+	x = cam.GetTransform().Rotation.x;
+	y = cam.GetTransform().Rotation.y;
+	z = cam.GetTransform().Rotation.z;
+
+	glm::vec3 rotation = cam.GetTransform().Rotation;
 
 	r_Vbo = new VertexBuffer(data->Vertices);
 	r_Ibo = new IndexBuffer(&(data->Indices)[0], data->Indices.size());
@@ -55,11 +68,16 @@ void Saturn::Renderer::Run()
 	r_Vbo->UnBind();
 	r_Ibo->UnBind();
 
-	Texture tex("./Textures/crate.png");
-	Texture tex2(".Textures/crate_specular.png");
+	Texture tex("./Textures/white.png");
+	Texture tex2(".Textures/white.png");
 	Shader shader("./Shaders/3DShader.shader");
 	//glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)r_Width / (float)r_Height, 0.0f, 100.0f);
-	glm::mat4 projection = glm::perspective(glm::radians(60.0f), float(r_Width) / float(r_Height), 0.1f, 100.0f);
+	glm::mat4 projection;
+
+	if (cam.GetCameraType() == Saturn::CameraType::PERSPECTIVE) {
+		projection = glm::perspective(glm::radians(cam.GetFov()), float(r_Width) / float(r_Height), cam.GetzNear(), cam.GetzFar());
+	}
+
 	//glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -4.5f, 4.5f);
 	glm::mat4 view = glm::mat4(1.0f);
 
@@ -69,6 +87,7 @@ void Saturn::Renderer::Run()
 	float xRot = 0.0f;
 	float yRot = 0.0f;
 	float zRot = 0.0f;
+	glm::vec3 lColor = glm::vec3(0.7f, 0.7f, 0.7f);
 
 	while (!glfwWindowShouldClose(r_Window)) {
 		glfwPollEvents();
@@ -76,11 +95,14 @@ void Saturn::Renderer::Run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f)); // translate it down so it's at the center of the scene
+		model = glm::translate(model, glm::vec3(0.0f, -1.0f, -5.0f)); // translate it down so it's at the center of the scene
 		model = glm::rotate(model, glm::radians(xRot), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(yRot), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(zRot), glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+
+		cam.SetPosition(glm::vec3(a, b, c));
+		cam.SetRotation(glm::vec3(x, y, z));
 
 		tex.Bind();
 		tex2.Bind(1);
@@ -88,21 +110,28 @@ void Saturn::Renderer::Run()
 		shader.SetUniform("material.diffuse", 0);
 		shader.SetUniform("material.specular", 1);
 		shader.SetUniform("light.position", lightPos);
-		shader.SetUniform("viewPos", glm::vec3(0.0f));
+		shader.SetUniform("viewPos", cam.GetTransform().Position);
 		shader.SetUniform("material.shininess", 64.0f);
 		shader.SetUniform("light.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
-		shader.SetUniform("light.diffuse", glm::vec3(0.7f, 0.7f, 0.7f));
+		shader.SetUniform("light.diffuse", lColor);
 		shader.SetUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader.SetUniform("projection", projection);
-		shader.SetUniform("view", view);
+		shader.SetUniform("view", cam.GetLookAt());
 		shader.SetUniform("model", model);
 		r_Vao->Bind();
+		glDrawElements(GL_TRIANGLES, data->Indices.size(), GL_UNSIGNED_INT, nullptr);
+		model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
+		shader.SetUniform("model", model);
+		glDrawElements(GL_TRIANGLES, data->Indices.size(), GL_UNSIGNED_INT, nullptr);
+		model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
+		shader.SetUniform("model", model);
 		glDrawElements(GL_TRIANGLES, data->Indices.size(), GL_UNSIGNED_INT, nullptr);
 		r_Vao->UnBind();
 		shader.UnBind();
 		tex.UnBind();
+		tex2.UnBind();
 
-		ue.DrawUI(r_ClearColor, xRot, yRot, zRot);
+		ue.DrawUI(r_ClearColor, xRot, yRot, zRot, lColor, x, y, z, a, b, c);
 		
 		glfwSwapBuffers(r_Window);
 		glfwGetWindowSize(r_Window, &r_Width, &r_Height);

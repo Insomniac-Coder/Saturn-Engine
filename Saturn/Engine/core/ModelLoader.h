@@ -12,12 +12,17 @@
 
 namespace Saturn {
 
+	struct Mesh {
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		unsigned int maxIndexVal;
+	};
+
 	class ModelLoader
 	{
 	private:
 		std::string path;
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		std::vector<Mesh> meshes;
 	public:
 		ModelLoader(std::string object3DPath);
 	};
