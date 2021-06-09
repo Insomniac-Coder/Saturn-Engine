@@ -82,10 +82,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\core\DrawCall.h" />
     <ClInclude Include="Engine\core\Camera.h" />
     <ClInclude Include="Engine\core\Application.h" />
     <ClInclude Include="Engine\core\Log\Log.h" />
     <ClInclude Include="Engine\core\RenderDataLoader.h" />
+    <ClInclude Include="Engine\core\Renderer2.h" />
     <ClInclude Include="Engine\Editor\imgui\imconfig.h" />
     <ClInclude Include="Engine\Editor\imgui\imgui.h" />
     <ClInclude Include="Engine\Editor\imgui\imgui_impl_glfw.h" />
@@ -98,7 +100,6 @@
     <ClInclude Include="Engine\core\Entrypoint.h" />
     <ClInclude Include="Engine\core\FileIO.h" />
     <ClInclude Include="Engine\core\Window.h" />
-    <ClInclude Include="Engine\core\Renderer.h" />
     <ClInclude Include="Engine\core\VertexBuffer.h" />
     <ClInclude Include="Engine\core\VertexArray.h" />
     <ClInclude Include="Engine\core\IndexBuffer.h" />
@@ -111,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Engine\core\DrawCall.cpp" />
     <ClCompile Include="Engine\core\Camera.cpp" />
     <ClCompile Include="Engine\core\Application.cpp" />
     <ClCompile Include="Engine\core\Entrypoint.cpp" />
@@ -118,8 +120,8 @@
     <ClCompile Include="Engine\core\glad.c" />
     <ClCompile Include="Engine\core\Log\Log.cpp" />
     <ClCompile Include="Engine\core\RenderDataLoader.cpp" />
+    <ClCompile Include="Engine\core\Renderer2.cpp" />
     <ClCompile Include="Engine\core\Window.cpp" />
-    <ClCompile Include="Engine\core\Renderer.cpp" />
     <ClCompile Include="Engine\core\VertexBuffer.cpp" />
     <ClCompile Include="Engine\core\VertexArray.cpp" />
     <ClCompile Include="Engine\core\IndexBuffer.cpp" />

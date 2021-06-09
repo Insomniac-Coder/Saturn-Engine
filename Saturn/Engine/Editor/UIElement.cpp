@@ -1,4 +1,6 @@
 #include "UIElement.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 Saturn::UI::UIElement::UIElement(GLFWwindow* windowRef) : u_Window(windowRef)
 {
@@ -15,6 +17,25 @@ void Saturn::UI::UIElement::DrawUI(glm::vec4& skyboxColor, float& x, float& y, f
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("New"))
+			{
+				//Do something
+			}
+			if (ImGui::MenuItem("Close"))
+			{
+				glfwSetWindowShouldClose(u_Window, GLFW_TRUE);
+			}
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+
+
 	ImGui::Text("Editor");
 	ImGui::ColorEdit3("SkyBox Color", glm::value_ptr(skyboxColor));
 	ImGui::SliderFloat("X-Rotation", &x, 0.0f, 360.0f);
@@ -24,7 +45,6 @@ void Saturn::UI::UIElement::DrawUI(glm::vec4& skyboxColor, float& x, float& y, f
 	ImGui::Text("Camera Rotation");
 	ImGui::SliderFloat("Camera X-Rotation", &camXRot, 0.0f, 360.0f);
 	ImGui::SliderFloat("Camera Y-Rotation", &camYRot, 0.0f, 360.0f);
-	ImGui::SliderFloat("Camera Z-Rotation", &camZRot, 0.0f, 360.0f);
 	ImGui::SliderFloat("Camera X-Position", &camXPos, -10.0f, 10.0f);
 	ImGui::SliderFloat("Camera Y-Position", &camYPos, -10.0f, 10.0f);
 	ImGui::SliderFloat("Camera Z-Position", &camZPos, -10.0f, 10.0f);

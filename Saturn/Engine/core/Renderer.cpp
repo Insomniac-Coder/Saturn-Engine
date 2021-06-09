@@ -57,8 +57,8 @@ void Saturn::Renderer::Run()
 
 	glm::vec3 rotation = cam.GetTransform().Rotation;
 
-	r_Vbo = new VertexBuffer(data->Vertices);
-	r_Ibo = new IndexBuffer(&(data->Indices)[0], data->Indices.size());
+	r_Vbo = new VertexBuffer(data->Vertices.size());
+	r_Ibo = new IndexBuffer(data->Indices.size());
 
 	r_Vao->AddAttribute(sizeof(((Vertex*)0)->Position) / sizeof(float));
 	r_Vao->AddAttribute(sizeof(((Vertex*)0)->Normal) / sizeof(float));
@@ -88,6 +88,9 @@ void Saturn::Renderer::Run()
 	float yRot = 0.0f;
 	float zRot = 0.0f;
 	glm::vec3 lColor = glm::vec3(0.7f, 0.7f, 0.7f);
+
+	r_Vbo->AddDataToBuffer(0, data->Vertices);
+	r_Ibo->AddDataToBuffer(0, data->Indices);
 
 	while (!glfwWindowShouldClose(r_Window)) {
 		glfwPollEvents();
