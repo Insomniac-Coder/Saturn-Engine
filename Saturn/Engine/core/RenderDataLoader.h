@@ -19,6 +19,7 @@ namespace Saturn {
 		RenderDataLoader(const std::string& dataFilePath);
 		~RenderDataLoader();
 		RenderData* GetRenderData();
+		static void IncrementInfoValue();
 
 	private:
 		void FileLoader(std::string fileName);

@@ -15,6 +15,7 @@
 #include "../Editor/UIElement.h"
 #include "FileIO.h"
 #include "Camera.h"
+#include "DrawCall.h"
 
 namespace Saturn {
 
@@ -31,8 +32,9 @@ namespace Saturn {
 		int r_Height;
 		int r_VirtualWidth;
 		int r_VirtualHeight;
-		glm::vec4 r_ClearColor = glm::vec4(0.25f, 0.25f, 0.25f, 1.0f);
+		glm::vec4 r_ClearColor = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f);
 		VertexArray* r_ObjectVao;
+		Texture* defaultTexture;
 	};
 
 }
