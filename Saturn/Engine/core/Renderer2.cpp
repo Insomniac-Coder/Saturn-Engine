@@ -124,9 +124,9 @@ void Saturn::Renderer::Run()
 		for (int i = 0; i < modelNum; i++) {
 			shader.SetUniform("model[" + std::to_string(i) + "]", modelList[i]);
 
-			shader.SetUniform("material[" + std::to_string(i) + "].diffuse", i % 2 == 0 ? 1 : 0);
-			shader.SetUniform("material[" + std::to_string(i) + "].specular", 0);
-			shader.SetUniform("material[" + std::to_string(i) + "].shininess", i % 2 == 0 ? 2.0f : 128.0f);
+			shader.SetUniform("diffuse[" + std::to_string(i) + "]", i % 2 == 0 ? 1 : 0);
+			shader.SetUniform("specular[" + std::to_string(i) + "]", 0);
+			shader.SetUniform("shininess[" + std::to_string(i) + "]", i % 2 == 0 ? 2.0f : 128.0f);
 		}
 		dCall.GetVertexArray()->Bind();
 		glDrawElements(GL_TRIANGLES, dCall.GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
