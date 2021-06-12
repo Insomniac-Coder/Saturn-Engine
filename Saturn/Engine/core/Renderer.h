@@ -1,11 +1,9 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#ifdef _WIN32
-#define APIENTRY __stdcall
-#endif
 #include "Log/Log.h"
-#include <glad/glad.h>
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include "Shader.h"

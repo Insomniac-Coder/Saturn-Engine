@@ -1,7 +1,8 @@
 #ifndef  TEXTURE_H
 #define TEXTURE_H
 #include <string>
-#include "glad/glad.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include "thirdparty/stb_image.h"
 
 class Texture

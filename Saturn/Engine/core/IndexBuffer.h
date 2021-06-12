@@ -1,6 +1,7 @@
 #ifndef INDEXBUFFER_H
 #define INDEXBUFFER_H
-#include "glad/glad.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <vector>
 
 class IndexBuffer

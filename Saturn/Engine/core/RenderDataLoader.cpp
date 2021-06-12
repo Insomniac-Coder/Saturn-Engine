@@ -84,6 +84,7 @@ void Saturn::RenderDataLoader::FileLoader(std::string fileName)
             vert.Position = Positions[i];
             vert.Normal = Normals[i];
             vert.TexCoords = TexCoords[i];
+            vert.MaterialIndex = 0;
             m_Vertices.push_back(vert);
         }
     }

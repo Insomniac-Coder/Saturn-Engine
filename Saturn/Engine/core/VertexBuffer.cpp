@@ -34,13 +34,10 @@ void VertexBuffer::UnBind()
 void VertexBuffer::AddDataToBuffer(unsigned int offset, std::vector<Saturn::Vertex> vertices)
 {
 	Bind();
-	LOG_INFO("Size of Vertex: " + std::to_string(sizeof(Saturn::Vertex)));
-	LOG_INFO("AddDataToBuffer: " + std::to_string(vertices.size() * sizeof(Saturn::Vertex)));
 	//void* ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 	//memcpy(ptr, &vertices[0], sizeof(Saturn::Vertex) * vertices.size());
 	//glNamedBufferSubData(vertexBufferId, offset * sizeof(Saturn::Vertex), vertices.size() * sizeof(Saturn::Vertex), &vertices[0]);
 	//glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBufferSubData(GL_ARRAY_BUFFER, offset * sizeof(Saturn::Vertex), vertices.size() * sizeof(Saturn::Vertex), &vertices[0]);
-	LOG_INFO(std::to_string(glGetError()));
 	UnBind();
 }

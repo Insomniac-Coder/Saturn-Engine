@@ -14,6 +14,7 @@ Saturn::DrawCall::DrawCall()
 	VAO->AddAttribute(sizeof(((Vertex*)0)->Position) / sizeof(float));
 	VAO->AddAttribute(sizeof(((Vertex*)0)->Normal) / sizeof(float));
 	VAO->AddAttribute(sizeof(((Vertex*)0)->TexCoords) / sizeof(float));
+	VAO->AddAttribute(sizeof(((Vertex*)0)->MaterialIndex) / sizeof(float));
 
 	VAO->UnBind();
 	VBO->UnBind();
@@ -25,21 +26,27 @@ Saturn::DrawCall::~DrawCall()
 	delete VAO, VBO, IBO;
 }
 
-void Saturn::DrawCall::PushObject(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec3 Color, std::string albedoTexture, std::string normalTexture, std::string ambientTexture, std::string metallicTexture)
+void Saturn::DrawCall::PushObject(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4 Color, std::string albedoTexture, std::string normalTexture, std::string ambientTexture, std::string metallicTexture)
 {
-	VBO->AddDataToBuffer(0 + (d_UsedBufferSize / sizeof(Vertex)), vertices);
-	LOG_INFO("Offset size: " + std::to_string(d_UsedBufferSize / sizeof(Vertex)));
 
 	if (d_IndicesSize == 0) {
+		VBO->AddDataToBuffer(0 + (d_UsedBufferSize / sizeof(Vertex)), vertices);
 		for (int i = 0; i < indices.size(); i++) {
 			if (d_MaxIndex < indices[i]) {
 				d_MaxIndex = indices[i];
 			}
 		}
 		IBO->AddDataToBuffer(0 + d_IndicesSize, indices);
+		d_MaterialIndex++;
 	}
 	else
 	{
+		for (int i = 0; i < vertices.size(); i++) {
+			vertices[i].MaterialIndex = d_MaterialIndex;
+			//LOG_INFO("Info value being used is " + std::to_string(d_MaterialIndex));
+		}
+		VBO->AddDataToBuffer(0 + (d_UsedBufferSize / sizeof(Vertex)), vertices);
+
 		int tempVal = 0;
 
 		for (int i = 0; i < indices.size(); i++) {
@@ -53,6 +60,7 @@ void Saturn::DrawCall::PushObject(std::vector<Vertex> vertices, std::vector<unsi
 
 		d_MaxIndex = tempVal;
 		IBO->AddDataToBuffer(0 + d_IndicesSize, indices);
+		d_MaterialIndex++;
 	}
 
 	d_IndicesSize += indices.size();

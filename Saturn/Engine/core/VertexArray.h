@@ -1,6 +1,7 @@
 #ifndef VERTEXARRAY_H
 #define VERTEXARRAY_H
-#include "glad/glad.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include "VertexBuffer.h"
 
 class VertexArray

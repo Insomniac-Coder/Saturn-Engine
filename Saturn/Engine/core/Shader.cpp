@@ -1,5 +1,6 @@
 #include "Shader.h"
-#include "glad/glad.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>

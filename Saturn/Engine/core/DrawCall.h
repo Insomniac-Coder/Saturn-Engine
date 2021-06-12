@@ -12,7 +12,7 @@ namespace Saturn
 	public:
 		DrawCall();
 		~DrawCall();
-		void PushObject(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec3 Color, std::string albedoTexture, std::string normalTexture, std::string ambientTexture, std::string metallicTexture);
+		void PushObject(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4 Color, std::string albedoTexture, std::string normalTexture, std::string ambientTexture, std::string metallicTexture);
 		bool IsAccomodationPossible(unsigned int vertexCount, unsigned int textureCount);
 		static void SetMaxTextureSlots(const unsigned short& imageUnits);
 		inline VertexArray* GetVertexArray() const { return VAO; }
@@ -25,10 +25,11 @@ namespace Saturn
 		unsigned int d_UsedBufferSize = 0;
 		unsigned short d_UsedTextureSlots = 1;
 		static unsigned short d_MaxTextureSlots;
-		const unsigned int MAXBUFFERSIZE = 28000000; //500k max vertices per draw call
+		const unsigned int MAXBUFFERSIZE = 500000 * sizeof(Vertex); //500k max vertices per draw call
 		unsigned long int d_MaxIndex = 0;
 		unsigned long int d_IndicesSize = 0;
 		unsigned int d_ObjectCount = 0;
+		unsigned int d_MaterialIndex = 0;
 
 		VertexArray* VAO;
 		VertexBuffer* VBO;

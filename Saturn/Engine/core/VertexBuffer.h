@@ -1,6 +1,7 @@
 #ifndef VERTEXBUFFER_H
 #define VERTEXBUFFER_H
-#include "glad/glad.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -9,10 +10,11 @@ namespace Saturn {
 		glm::vec3 Position;
 		glm::vec3 Normal;
 		glm::vec2 TexCoords;
+		float MaterialIndex;
 	};
 
 	struct DrawInfo {
-		glm::vec3 Color;
+		glm::vec4 Color;
 		float TextureSlots[4];
 	};
 

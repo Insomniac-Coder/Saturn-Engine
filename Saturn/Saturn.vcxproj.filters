@@ -110,9 +110,6 @@
     <ClCompile Include="Engine\core\FileIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\core\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\core\Log\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

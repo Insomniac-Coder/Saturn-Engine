@@ -62,7 +62,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)thirdparty\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc142-mtd.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;assimp-vc142-mtd.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -117,7 +117,6 @@
     <ClCompile Include="Engine\core\Application.cpp" />
     <ClCompile Include="Engine\core\Entrypoint.cpp" />
     <ClCompile Include="Engine\core\FileIO.cpp" />
-    <ClCompile Include="Engine\core\glad.c" />
     <ClCompile Include="Engine\core\Log\Log.cpp" />
     <ClCompile Include="Engine\core\RenderDataLoader.cpp" />
     <ClCompile Include="Engine\core\Renderer2.cpp" />
