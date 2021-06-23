@@ -51,7 +51,7 @@ void Saturn::Renderer::Run()
 	DrawCall dCall;
 	DrawCall dCall2;
 	DrawCall dCall3;
-	int modelNum = 5;
+	int modelNum = 27;
 
 	Saturn::UI::UIElement ue(r_Window);
 
@@ -124,16 +124,16 @@ void Saturn::Renderer::Run()
 		for (int i = 0; i < modelNum; i++) {
 			shader.SetUniform("model[" + std::to_string(i) + "]", modelList[i]);
 
-			shader.SetUniform("diffuse[" + std::to_string(i) + "]", i % 2 == 0 ? 1 : 0);
+			shader.SetUniform("diffuse[" + std::to_string(i) + "]",  0);
 			shader.SetUniform("specular[" + std::to_string(i) + "]", 0);
-			shader.SetUniform("shininess[" + std::to_string(i) + "]", i % 2 == 0 ? 2.0f : 128.0f);
+			shader.SetUniform("shininess[" + std::to_string(i) + "]",  128.0f);
 		}
 		dCall.GetVertexArray()->Bind();
 		glDrawElements(GL_TRIANGLES, dCall.GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
 		dCall.GetVertexArray()->UnBind();
 		shader.UnBind();
 
-		/*
+		
 		shader.Bind();
 		shader.SetUniform("light.position", lightPos);
 		shader.SetUniform("viewPos", cam.GetTransform().Position);
@@ -145,9 +145,9 @@ void Saturn::Renderer::Run()
 		for (int i = 0; i < modelNum; i++) {
 			shader.SetUniform("model[" + std::to_string(i) + "]", modelList2[i]);
 
-			shader.SetUniform("material[" + std::to_string(i) + "].diffuse", i % 2 == 0 ? 0 : 1);
-			shader.SetUniform("material[" + std::to_string(i) + "].specular", 0);
-			shader.SetUniform("material[" + std::to_string(i) + "].shininess", 128.0f);
+			shader.SetUniform("diffuse[" + std::to_string(i) + "]", 1);
+			shader.SetUniform("specular[" + std::to_string(i) + "]", 0);
+			shader.SetUniform("shininess[" + std::to_string(i) + "]", 64.0f);
 		}
 		dCall2.GetVertexArray()->Bind();
 		glDrawElements(GL_TRIANGLES, dCall2.GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
@@ -165,15 +165,15 @@ void Saturn::Renderer::Run()
 		for (int i = 0; i < modelNum; i++) {
 			shader.SetUniform("model[" + std::to_string(i) + "]", modelList3[i]);
 
-			shader.SetUniform("material[" + std::to_string(i) + "].diffuse", i % 2 == 0 ? 1 : 0);
-			shader.SetUniform("material[" + std::to_string(i) + "].specular", 0);
-			shader.SetUniform("material[" + std::to_string(i) + "].shininess", 32.0f);
+			shader.SetUniform("diffuse[" + std::to_string(i) + "]", 0);
+			shader.SetUniform("specular[" + std::to_string(i) + "]", 0);
+			shader.SetUniform("shininess[" + std::to_string(i) + "]", 32.0f);
 		}
 		dCall3.GetVertexArray()->Bind();
-		glDrawElements(GL_TRIANGLES, dCall2.GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, dCall3.GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
 		dCall3.GetVertexArray()->UnBind();
 		shader.UnBind();
-		*/
+		
 
 		ue.DrawUI(r_ClearColor);
 

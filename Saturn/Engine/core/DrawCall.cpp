@@ -10,7 +10,7 @@ Saturn::DrawCall::DrawCall()
 
 	VBO = new VertexBuffer(MAXBUFFERSIZE / sizeof(Vertex));
 	IBO = new IndexBuffer((MAXBUFFERSIZE / sizeof(Vertex)) * 5);
-
+	
 	VAO->AddAttribute(sizeof(((Vertex*)0)->Position) / sizeof(float));
 	VAO->AddAttribute(sizeof(((Vertex*)0)->Normal) / sizeof(float));
 	VAO->AddAttribute(sizeof(((Vertex*)0)->TexCoords) / sizeof(float));

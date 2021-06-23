@@ -18,8 +18,6 @@ namespace Saturn {
         ~Application();
     };
 
-    Application* CreateApplication();
-
 }
 
 #endif APPLICATION_H

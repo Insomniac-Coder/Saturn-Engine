@@ -12,7 +12,7 @@ out vec3 FragPos;
 out vec3 Normal;
 out float Info;
 
-uniform mat4 model[5];
+uniform mat4 model[27];
 uniform mat4 view;
 uniform mat4 projection;
 
@@ -47,9 +47,9 @@ in vec2 TexCoords;
 in float Info;
 
 uniform vec3 viewPos;
-uniform sampler2D diffuse[5];
-uniform sampler2D specular[5];
-uniform float shininess[5];
+uniform sampler2D diffuse[27];
+uniform sampler2D specular[27];
+uniform float shininess[27];
 uniform Light light;
 
 void main()
@@ -58,34 +58,9 @@ void main()
     vec4 diffuseTexture, specularTexture;
     float shine;
     
-    switch (index)
-    {
-    case 0:
-        diffuseTexture = texture(diffuse[0], TexCoords);
-        specularTexture = texture(specular[0], TexCoords);
-        shine = shininess[0];
-        break;
-    case 1:
-        diffuseTexture = texture(diffuse[1], TexCoords);
-        specularTexture = texture(specular[1], TexCoords);
-        shine = shininess[1];
-        break;
-    case 2:
-        diffuseTexture = texture(diffuse[2], TexCoords);
-        specularTexture = texture(specular[2], TexCoords);
-        shine = shininess[2];
-        break;
-    case 3:
-        diffuseTexture = texture(diffuse[3], TexCoords);
-        specularTexture = texture(specular[3], TexCoords);
-        shine = shininess[3];
-        break;
-    case 4:
-        diffuseTexture = texture(diffuse[4], TexCoords);
-        specularTexture = texture(specular[4], TexCoords);
-        shine = shininess[4];
-        break;
-    }
+    diffuseTexture = texture(diffuse[index], TexCoords);
+    specularTexture = texture(specular[index], TexCoords);
+    shine = shininess[index];
 
     // ambient
     vec3 ambient = light.ambient * diffuseTexture.rgb;
